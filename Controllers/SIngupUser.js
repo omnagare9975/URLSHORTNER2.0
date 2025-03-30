@@ -44,7 +44,7 @@ const loginUser = async (req ,res)=>{
         const SesionID =  uuidv4()
         setUser(SesionID , finduser)
         res.cookie("uid" , SesionID)
-        return res.redirect('http://localhost:8000/urlshortner')
+        return res.redirect('/urlshortner')
           
     })
     
