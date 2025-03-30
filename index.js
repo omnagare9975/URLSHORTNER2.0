@@ -76,7 +76,7 @@ app.get('/' ,async (req , res)=>{
 
 })
 
-mongoose.connect('mongodb://localhost:27017/urlshortner')
+mongoose.connect('mongodb+srv://omnagare07:RryIXdTQBCEoZmv5@cluster0.f1xbd.mongodb.net/vitalproject?retryWrites=true&w=majority&appName=Cluster0')
 .then(()=> console.log('DB IS CONNECTED !! '))
 .catch(()=>  console.log(`DB is Failed to connect`))
 
