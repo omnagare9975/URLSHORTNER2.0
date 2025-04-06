@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const  {UserModel} = require('../Models/signup')
 const bcrypt = require('bcrypt')
-
+const jwt = require('jsonwebtoken')
 const {setUser , GetUser} = require('../service/auth')
-
+const  secreteTable = 'omnagare'
 const { v4: uuidv4 } = require('uuid');
 
 const CreateUser = async (req , res) =>{
@@ -34,17 +34,19 @@ const loginUser = async (req ,res)=>{
     const finduser = await UserModel.findOne({email})
 
     const Result = bcrypt.compare(password , finduser.password , (err , Result) =>{
-          if (err){
-            console.log(`Failed to generate`)
-          }
-          if( !Result){
-            return res.send("Incorrectuser And Pass")
-          }
+        const SingedUser = {email: finduser.email , name: finduser.name }
 
-        const SesionID =  uuidv4()
-        setUser(SesionID , finduser)
-        res.cookie("uid" , SesionID)
-        return res.redirect('/urlshortner')
+
+        if (!Result){
+            res.send('Password is Wrong')
+        }
+
+        token = jwt.sign(SingedUser , secreteTable)
+
+        res.cookie('_uid' , token)
+
+        res.redirect('/urlshortner')
+        
           
     })
     

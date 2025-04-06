@@ -10,6 +10,7 @@ const UrlSchema = mongoose.Schema({
     ShortURL: {   // Ensure this matches in all queries
         type: String,
         required: true
+        
     },
     ReDirect: {
         type: String,

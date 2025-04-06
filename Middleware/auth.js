@@ -1,17 +1,34 @@
 const { GetUser } = require("../service/auth");
+const jwt = require('jsonwebtoken')
+const  secreteTable = 'omnagare'
 
 async function restrictToLoggedinUserOnly(req, res, next) {
-  const userUid = req.cookies?.uid;
-  console.log(userUid)
+  const token = req.cookies._uid;
+  
+  try {
+    if (!token) {
+      return res.redirect('/Login'); // 🛑 No token provided
+    }
+    
+    const decoded = jwt.verify(token, secreteTable);
 
-  if (!userUid) return res.redirect("/Login");
-  const user = GetUser(userUid);
+    if (!decoded) {
+      return res.redirect('/Login'); // 🛑 Invalid token
+    }
 
-  if (!user) return res.redirect("/Login");
 
-  req.user = user;
-  next();
+    req.user = decoded; // ✅ Attach decoded payload to req.user
+    next(); // ✅ Proceed to the next middleware or route
+
+  } catch (error) {
+    console.error("JWT verification failed:", error.message);
+    return res.redirect('/Login'); // 🛑 Redirect on error
+  }
 }
+
+
+ 
+
 
 async function checkAuth(req, res, next) {
   const userUid = req.cookies?.uid;

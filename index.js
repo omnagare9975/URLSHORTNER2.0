@@ -10,7 +10,7 @@ const loginRoute = require('./Routes/Login')
 const {restrictToLoggedinUserOnly} = require('./Middleware/auth')
 const  mongoose  = require('mongoose');
 
-
+app.use(cookieParser())
 
 
 
@@ -21,7 +21,7 @@ app.set('views' , path.resolve("./views"))
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser())
+
 app.use('/urlshortner' , restrictToLoggedinUserOnly , StaticRoute)
 app.use('/signup' , UserSingUp)
 app.use('/Login' ,loginRoute )
@@ -76,7 +76,7 @@ app.get('/' ,async (req , res)=>{
 
 })
 
-mongoose.connect('mongodb+srv://omnagare07:RryIXdTQBCEoZmv5@cluster0.f1xbd.mongodb.net/vitalproject?retryWrites=true&w=majority&appName=Cluster0')
+mongoose.connect('mongodb://localhost:27017/vitalhealthcare')
 .then(()=> console.log('DB IS CONNECTED !! '))
 .catch(()=>  console.log(`DB is Failed to connect`))
 
